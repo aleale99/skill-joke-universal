@@ -23,13 +23,17 @@ import pyjokes
 from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill
 from mycroft.util.log import getLogger
+import sys
+sys.path.append(dirname(__file__))
+from auto_translatable import AutotranslatableSkill
+
 
 __author__ = 'crios'
 
 LOGGER = getLogger(__name__)
 
 
-class JokingSkill(MycroftSkill):
+class JokingSkill(AutotranslatableSkill):
     def __init__(self):
         super(JokingSkill, self).__init__(name="JokingSkill")
 
