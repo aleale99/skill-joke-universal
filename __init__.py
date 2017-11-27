@@ -16,16 +16,17 @@
 # along with Mycroft Core.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from os.path import dirname, join
-
 import pyjokes
 
 from adapt.intent import IntentBuilder
-from mycroft.skills.core import MycroftSkill
 from mycroft.util.log import getLogger
-import sys
-sys.path.append(dirname(__file__))
-from auto_translatable import AutotranslatableSkill
+try:
+    from mycroft.skills.auto_translatable import AutotranslatableFallback
+except ImportError:
+    from os.path import dirname
+    import sys
+    sys.path.append(dirname(__file__))
+    from auto_translatable import AutotranslatableSkill
 
 
 __author__ = 'crios'
