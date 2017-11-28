@@ -18,7 +18,6 @@
 
 import pyjokes
 
-from adapt.intent import IntentBuilder
 from mycroft.util.log import getLogger
 try:
     from mycroft.skills.auto_translatable import AutotranslatableFallback
@@ -29,7 +28,7 @@ except ImportError:
     from auto_translatable import AutotranslatableSkill
 
 
-__author__ = 'crios'
+__author__ = 'crios', 'jarbas'
 
 LOGGER = getLogger(__name__)
 
@@ -39,8 +38,7 @@ class JokingSkill(AutotranslatableSkill):
         super(JokingSkill, self).__init__(name="JokingSkill")
 
     def initialize(self):
-        intent = IntentBuilder("JokingIntent").require("JokingKeyword").build()
-        self.register_intent(intent, self.handle_intent)
+        self.register_intent_file('joking.intent', self.handle_intent)
 
     def handle_intent(self, message):
         self.speak(pyjokes.get_joke(language=self.lang[:-3], category='all'))
