@@ -1,24 +1,23 @@
-# Copyright 2016 Mycroft AI, Inc.
+# Copyright 2017, Mycroft AI Inc.
 #
-# This file is part of Mycroft Core.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-# Mycroft Core is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
-# Mycroft Core is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Mycroft Core.  If not, see <http://www.gnu.org/licenses/>.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 
 import pyjokes
 
-from mycroft.util.log import getLogger
+from adapt.intent import IntentBuilder
+from mycroft.skills.core import intent_handler
+from random import choice
 try:
     from mycroft.skills.auto_translatable import AutotranslatableSkill
 except ImportError:
@@ -28,20 +27,36 @@ except ImportError:
     from auto_translatable import AutotranslatableSkill
 
 
-__author__ = 'crios', 'jarbas'
-
-LOGGER = getLogger(__name__)
+joke_types = ['chuck', 'neutral']
 
 
 class JokingSkill(AutotranslatableSkill):
     def __init__(self):
         super(JokingSkill, self).__init__(name="JokingSkill")
 
-    def initialize(self):
-        self.register_intent_file('joking.intent', self.handle_intent)
+    def speak_joke(self, lang, category):
+        lang = "en-us"
+        self.speak(pyjokes.get_joke(language=lang, category=category))
 
-    def handle_intent(self, message):
-        self.speak(pyjokes.get_joke(language=self.lang[:-3], category='all'))
+    @intent_handler(IntentBuilder("JokingIntent").require("Joke"))
+    def handle_general_joke(self, message):
+        selected = choice(joke_types)
+        self.speak_joke(self.lang[:-3], selected)
+
+    @intent_handler(IntentBuilder("ChuckJokeIntent").require("Joke")
+                    .require("Chuck"))
+    def handle_chuck_joke(self, message):
+        self.speak_joke(self.lang[:-3], 'chuck')
+
+    @intent_handler(IntentBuilder("NeutralJokeIntent").require("Joke")
+                    .require("Neutral"))
+    def handle_neutral_joke(self, message):
+        self.speak_joke(self.lang[:-3], 'neutral')
+
+    @intent_handler(IntentBuilder("AdultJokeIntent").require("Joke")
+                    .require("Adult"))
+    def handle_adult_joke(self, message):
+        self.speak_joke(self.lang[:-3], 'adult')
 
     def stop(self):
         pass

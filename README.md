@@ -1,13 +1,28 @@
-# :smile: Universal Jokes Skill
+## Universal Jokes
+Let Mycroft brighten your day with a little humor
 
-Joke skill only works in english, now it translates jokes at runtime
+## Description
+Brighten your day with a little humor.  This draws on the jokes collected by the [PyJokes project](https://github.com/pyjokes/pyjokes) to give you a chuckle.
 
-Using padatious instead of adapt for better language support
+The joke categories are:
+* Neutral -- jokes that are safe for work, kids or your grandmother
+* Adult -- nothing horrible, but be ready to cover some ears
+* Chuck Norris -- jokes only a geek can love
 
-intents translated with google
+By default it will give you clean and/or geeky jokes, but you can ask a little adult humor if you feel that way.
 
-# Usage:
-* `joke`
-* `make me laugh`
-* `brighten my day`
-* `tell a me joke`
+_WARNING:  Laughter is not guaranteed, but eye rolls are likely._
+
+uses and translates english jokes by default instead of relying in pyjokes
+module for language support
+
+## Examples
+* "Make me laugh"
+* "Tell me a Chuck Norris joke"
+* "I want to hear a raunchy joke"
+* "How about a neutral joke"
+
+## Credits
+Mycroft AI
+
+Everyone at https://github.com/pyjokes/pyjokes!
