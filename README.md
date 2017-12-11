@@ -16,6 +16,8 @@ _WARNING:  Laughter is not guaranteed, but eye rolls are likely._
 uses and translates english jokes by default instead of relying in pyjokes
 module for language support
 
+intent vocabulary auto-translated with google
+
 ## Examples
 * "Make me laugh"
 * "Tell me a Chuck Norris joke"

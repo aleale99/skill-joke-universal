@@ -1,9 +1,14 @@
 from os.path import join, dirname, exists
 from os import listdir, makedirs
-from mtranslate import translate
+from mtranslate import translate as google_tx
 import unicodedata
 import re
 from time import sleep
+
+
+def translate(*args, **kwargs):
+    sentence = google_tx(*args, **kwargs)
+    return unicodedata.normalize('NFKD', sentence).encode('utf8', 'ignore')
 
 
 def fix_tx(tx):
@@ -47,7 +52,15 @@ def tx_intents(lang):
     for file in files:
         if file in existing_files:
             continue
-        if ".intent" in file or ".entity" in file:
+        elif ".voc" in file:
+            print "translating", file, "from", source_lang, "to", lang
+            with open(join(intents_path, file), "r") as f:
+                source_lines = f.readlines()
+            with open(join(target_path, file), "w") as f:
+                for line in source_lines:
+                    tx = translate(line, lang, source_lang)
+                    f.write(tx+"\n")
+        elif ".intent" in file or ".entity" in file:
             print "translating", file, "from", source_lang, "to", lang
             with open(join(intents_path, file), "r") as f:
                 source_lines = f.readlines()
