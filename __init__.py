@@ -35,7 +35,7 @@ class JokingSkill(AutotranslatableSkill):
         super(JokingSkill, self).__init__(name="JokingSkill")
 
     def speak_joke(self, lang, category):
-        lang = "en-us"
+        lang = "en"
         self.speak(pyjokes.get_joke(language=lang, category=category))
 
     @intent_handler(IntentBuilder("JokingIntent").require("Joke"))
