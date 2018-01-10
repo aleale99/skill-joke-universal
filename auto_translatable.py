@@ -11,6 +11,8 @@ class AutotranslatableSkill(MycroftSkill):
         MycroftSkill.__init__(self, name, emitter)
 
     def language_detect(self, utterance):
+        utterance = unicodedata.normalize('NFKD', utterance).encode('ascii',
+                                                                    'ignore')
         return language_detect(utterance)
 
     def translate(self, text, lang=None):
